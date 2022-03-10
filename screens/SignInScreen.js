@@ -6,7 +6,7 @@ import CustomInput from '../components/custominput/CustomInput';
 import CustomButton from '../components/custombutton/CustomButton';
 import SocialSignInButton from '../components/SocialSignInButton/SocialSignInButton';
 
-const SignInScreen = () => {
+const SignInScreen = (props) => {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -15,13 +15,14 @@ const SignInScreen = () => {
     const { height } = useWindowDimensions();
 
     const onSignInPress = () => {
-        console.warn('Sign in')
+        //validate user
+        props.navigation.navigate('HomeScreen')
     }
     const onForgotPassword = () => {
-        console.warn('Forgot Password')
+        props.navigation.navigate("ForgotScreen")
     }
     const onSignUpPress = () => {
-        console.warn('onSignUpPress')
+        props.navigation.navigate("SignUp")
     }
     return (
         <View style={styles.root}>
@@ -55,7 +56,7 @@ const SignInScreen = () => {
             <SocialSignInButton />
             <CustomButton
                 onPress={onSignUpPress}
-                text={'no account ? Sign Up'}
+                text={'Dont have an account ? Create one'}
                 type="TERTIARY"
             />
 

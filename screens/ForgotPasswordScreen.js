@@ -1,19 +1,19 @@
 //import liraries
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image,  } from 'react-native';
+import { View, Text, StyleSheet, Image, } from 'react-native';
 import Logo from '../assets/Logo.jpg'
 import CustomInput from '../components/custominput/CustomInput';
 import CustomButton from '../components/custombutton/CustomButton';
 
 
-const ForgotPasswordScreen = () => {
+const ForgotPasswordScreen = (props) => {
     const [username, setUserName] = useState('')
 
     const onSendPressed = () => {
-        console.warn('onSendPressed')
+        props.navigation.navigate("NewPassword")
     }
     const onSignUpPress = () => {
-        console.warn('onSignUpPress')
+        props.navigation.navigate("SignIn")
     }
     return (
         <View style={styles.root}>
@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
         padding: 40
     },
     title: {
-     fontWeight:'bold',
-     fontSize:24,
-     marginBottom:20
+        fontWeight: 'bold',
+        fontSize: 24,
+        marginBottom: 20
     }
 });
 

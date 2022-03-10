@@ -6,7 +6,7 @@ import CustomInput from '../components/custominput/CustomInput';
 import CustomButton from '../components/custombutton/CustomButton';
 import SocialSignInButton from '../components/SocialSignInButton/SocialSignInButton';
 
-const SignUpScreen = () => {
+const SignUpScreen = (props) => {
 
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -17,9 +17,8 @@ const SignUpScreen = () => {
 
 
     const onRegesterPress = () => {
-        console.warn('onRegesterPress')
+       props.navigation.navigate("ConfirmEmail")
     }
-    
     const onTermOfUsePressed = () => {
         console.warn('onTermOfUsePressed')
     }
@@ -27,7 +26,7 @@ const SignUpScreen = () => {
         console.warn('onPrivacyPressed')
     }
     const onSignInPress = () => {
-        console.warn('onSignInPress')
+        props.navigation.navigate("SignIn")
     }
     return (
         <View style={styles.root}>
@@ -70,7 +69,7 @@ const SignUpScreen = () => {
                 and {" "}
                 <Text style={styles.link} onPress={onPrivacyPressed}>Privacy Policy</Text>
             </Text>
-            <SocialSignInButton />
+            {/* <SocialSignInButton /> */}
             <CustomButton
                 onPress={onSignInPress}
                 text={'Have an account? Sign in '}

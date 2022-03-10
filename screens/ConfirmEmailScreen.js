@@ -1,27 +1,24 @@
 //import liraries
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image,  } from 'react-native';
+import { View, Text, StyleSheet, Image, } from 'react-native';
 import Logo from '../assets/Logo.jpg'
 import CustomInput from '../components/custominput/CustomInput';
 import CustomButton from '../components/custombutton/CustomButton';
 
 
-const ConfirmEmailScreen = () => {
+const ConfirmEmailScreen = (props) => {
 
-   
     const [confirmcode, setConfirmcode] = useState('')
 
 
-   
-
     const onConfirmPressed = () => {
-        console.warn('onConfirmPressed')
+        props.navigation.navigate("HomeScreen")
     }
     const onResendPress = () => {
         console.warn('onResendPress')
     }
     const onSignUpPress = () => {
-        console.warn('onSignUpPress')
+        props.navigation.navigate("SignIn")
     }
     return (
         <View style={styles.root}>
@@ -31,7 +28,7 @@ const ConfirmEmailScreen = () => {
                 placeholder='Enter your confirmation code'
                 value={confirmcode}
                 setValue={setConfirmcode}
-               
+
 
             />
             <CustomButton
@@ -44,7 +41,7 @@ const ConfirmEmailScreen = () => {
                 text={'Resend code'}
                 type="SECONDARY"
             />
-            
+
             <CustomButton
                 onPress={onSignUpPress}
                 text={'Back to Sign in'}
@@ -62,7 +59,7 @@ const styles = StyleSheet.create({
         padding: 40
     },
     text: {
-       paddingHorizontal:10
+        paddingHorizontal: 10
     }
 });
 

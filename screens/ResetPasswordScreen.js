@@ -1,21 +1,21 @@
 //import liraries
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image,  } from 'react-native';
+import { View, Text, StyleSheet, Image, } from 'react-native';
 import Logo from '../assets/Logo.jpg'
 import CustomInput from '../components/custominput/CustomInput';
 import CustomButton from '../components/custombutton/CustomButton';
 
 
-const ResetPasswordScreen = () => {
+const ResetPasswordScreen = (props) => {
 
     const [code, setCode] = useState('')
     const [newPassword, setNewPassword] = useState('')
 
     const onSubmitPress = () => {
-        console.warn('onSubmitPress')
+        props.navigation.navigate("HomeScreen")
     }
     const onSignUpPress = () => {
-        console.warn('onSignUpPress')
+        props.navigation.navigate("SignIn")
     }
     return (
         <View style={styles.root}>
@@ -30,14 +30,14 @@ const ResetPasswordScreen = () => {
                 placeholder='Enter your new password'
                 value={newPassword}
                 setValue={setNewPassword}
-            
+
             />
             <CustomButton
                 onPress={onSubmitPress}
                 text={'Submit'}
                 type="PRIMARY"
             />
-           
+
             <CustomButton
                 onPress={onSignUpPress}
                 text={'Back to Sign in'}
@@ -54,9 +54,9 @@ const styles = StyleSheet.create({
         padding: 40
     },
     title: {
-     fontWeight:'bold',
-     fontSize:24,
-     marginBottom:20
+        fontWeight: 'bold',
+        fontSize: 24,
+        marginBottom: 20
     }
 });
 
