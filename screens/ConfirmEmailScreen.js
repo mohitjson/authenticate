@@ -1,17 +1,19 @@
 //import liraries
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, } from 'react-native';
-import Logo from '../assets/Logo.jpg'
+
 import CustomInput from '../components/custominput/CustomInput';
 import CustomButton from '../components/custombutton/CustomButton';
-
+import { useForm } from 'react-hook-form'
 
 const ConfirmEmailScreen = (props) => {
 
-    const [confirmcode, setConfirmcode] = useState('')
+    const { control, handleSubmit, } = useForm();
 
 
-    const onConfirmPressed = () => {
+
+    const onConfirmPressed = (data) => {
+        console.warn(data)
         props.navigation.navigate("HomeScreen")
     }
     const onResendPress = () => {
@@ -23,16 +25,19 @@ const ConfirmEmailScreen = (props) => {
     return (
         <View style={styles.root}>
 
-            <Text>Confirmation Code *</Text>
+            <Text>Confirm your email</Text>
             <CustomInput
+                control={control}
+                name='code'
                 placeholder='Enter your confirmation code'
-                value={confirmcode}
-                setValue={setConfirmcode}
+                rules={{
+                    required: 'Confirmation code is required'
+                }}
 
 
             />
             <CustomButton
-                onPress={onConfirmPressed}
+                onPress={handleSubmit(onConfirmPressed)}
                 text={'Confirm'}
                 type="PRIMARY"
             />

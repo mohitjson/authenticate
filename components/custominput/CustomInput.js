@@ -1,21 +1,37 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { Controller } from 'react-hook-form';
 
-const CustomInput = ({ value, setValue,placeholder,secureTextEntry }) => {
-    return (
-        <View style={styles.container}>
 
-            <TextInput
-                value={value}
-                onChangeText={setValue}
-                placeholder={placeholder}
-                secureTextEntry={secureTextEntry}
-                style={styles.input}
+const CustomInput =
+    ({ control, name, rules = {}, placeholder, secureTextEntry }) => {
+        return (
+
+            <Controller
+                control={control}
+                name={name}
+                rules={rules}
+                render={({
+                    field: { value, onChange, onBlur }, fieldState: { error } }) => (
+                    <>
+                        <View style={[styles.container, { borderColor: error ? 'red' : "#e8e8e8" }]}>
+                            <TextInput
+                                value={value}
+                                onChangeText={onChange}
+                                onBlur={onBlur}
+                                placeholder={placeholder}
+                                secureTextEntry={secureTextEntry}
+                                style={styles.input}
+                            />
+                        </View>
+                        {error && <Text style={{ alignSelf: 'stretch', color: 'red' }}>{error.message || 'Error'}</Text>}
+                    </>
+                )}
             />
-        </View>
-    );
-};
+
+        );
+    };
 
 // define your styles
 const styles = StyleSheet.create({

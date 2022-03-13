@@ -4,12 +4,14 @@ import { View, Text, StyleSheet, Image, } from 'react-native';
 import Logo from '../assets/Logo.jpg'
 import CustomInput from '../components/custominput/CustomInput';
 import CustomButton from '../components/custombutton/CustomButton';
-
+import { useForm } from 'react-hook-form';
 
 const ForgotPasswordScreen = (props) => {
-    const [username, setUserName] = useState('')
 
-    const onSendPressed = () => {
+    const { control, handleSubmit } = useForm();
+
+    const onSendPressed = (data) => {
+        console.warn(data)
         props.navigation.navigate("NewPassword")
     }
     const onSignUpPress = () => {
@@ -20,12 +22,15 @@ const ForgotPasswordScreen = (props) => {
 
             <Text style={styles.title}>Reset Your password *</Text>
             <CustomInput
+                control={control}
+                name='username'
                 placeholder='username'
-                value={username}
-                setValue={setUserName}
+                rules={{
+                    required: 'Username is required'
+                }}
             />
             <CustomButton
-                onPress={onSendPressed}
+                onPress={handleSubmit(onSendPressed)}
                 text={'Send'}
                 type="PRIMARY"
             />
