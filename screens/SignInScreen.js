@@ -4,31 +4,53 @@ import { View, Text, StyleSheet, Image, useWindowDimensions } from 'react-native
 import { useForm, Controller } from "react-hook-form"
 
 import Logo from '../assets/Logo.jpg'
+
 import CustomInput from '../components/custominput/CustomInput';
 import CustomButton from '../components/custombutton/CustomButton';
 import SocialSignInButton from '../components/SocialSignInButton/SocialSignInButton';
 
-import { auth } from '../firebase';
-
+// import { auth } from '../firebase';
+import axios from 'axios';
 
 const SignInScreen = (props) => {
     const { height } = useWindowDimensions();
+    const [message, setMessage] = useState('');
+
 
     const { control, handleSubmit, formState: { errors } } = useForm();
 
 
-    const onSignInPress = (data) => {
-        // auth
-        //     .createUserWithEmailAndPassword(data.username, data.Password)
-        //     .then(userCredentials => {
-        //         const user = userCredentials.user;
-        //         console.log(user.username)
-        //     })
-        //     .catch(error => alert(error.message))
-
+    const onSignInPress = (credentials) => {
         // props.navigation.navigate('HomeScreen')
+        console.log(credentials)
+        fetch(
+            'https://uae-staging.bevarabia.com/rest/V1/integration/customer/token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "username": credentials.username,
+                "password": credentials.password
+            }),
+        })
+            .then((response) => {
+                // console.log('status code :', response);
+                response.json()
+                    .then((data) => setMessage(data.message))
+
+
+                if (response.status == 200) {
+                    props.navigation.navigate('HomeScreen')
+                }
+            })
+            .catch((error) => console.log(error))
 
     }
+    const handleMessage = (message) => {
+        setMessage(message);
+    }
+
     const onForgotPassword = () => {
         props.navigation.navigate("ForgotScreen")
     }
@@ -41,21 +63,21 @@ const SignInScreen = (props) => {
             <Image source={Logo}
                 style={[styles.logo, { height: height * 0.3 }]}
                 resizeMode='contain' />
-
+            <Text style={{ color: 'red' }}>{message}</Text>
             <CustomInput
                 name="username"
-                placeholder='username'
+                placeholder='email'
                 control={control}
                 rules={{
-                    required: 'username is required *',
+                    required: 'email is required *',
                     minLength: {
                         value: 12,
-                        message: 'Username should be atleast 12 character long'
+                        message: 'email should be atleast 12 character long'
                     }
                 }}
             />
             <CustomInput
-                name="Password"
+                name="password"
                 placeholder='password'
                 control={control}
                 secureTextEntry={true}
@@ -66,6 +88,7 @@ const SignInScreen = (props) => {
                     }
                 }}
             />
+
             <CustomButton
                 onPress={handleSubmit(onSignInPress)}
                 text={'Sign in'}

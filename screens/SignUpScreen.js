@@ -14,10 +14,41 @@ const SignUpScreen = (props) => {
 
     const { control, handleSubmit, watch } = useForm();
     const pwd = watch('password');
+    const [message, setMessage] = useState([]);
 
+    const onRegesterPress = (credentials) => {
+        // props.navigation.navigate("ConfirmEmail")
+        console.log(credentials)
+        fetch(
+            'https://uae-staging.bevarabia.com/rest/V1/customers', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
 
-    const onRegesterPress = () => {
-        props.navigation.navigate("ConfirmEmail")
+                "customer": {
+                    "email": credentials.email,
+                    "firstname": credentials.firstname,
+                    "lastname": credentials.lastname
+                },
+                "password": credentials.password
+            }),
+        })
+            .then((response) => {
+                console.log('status code:', response.status)
+                response.json()
+                    .then((data) => setMessage(data.message))
+
+                    if (response.status !== 200) {
+
+                        setMessage(response.message);
+    
+                } else {
+                    props.navigation.navigate('SignIn')
+                }
+            })
+            .catch((error) => console.log(error.response.messge))
     }
     const onTermOfUsePressed = () => {
         console.warn('onTermOfUsePressed')
@@ -32,20 +63,37 @@ const SignUpScreen = (props) => {
         <View style={styles.root}>
 
             <Text style={styles.title}>Create an account</Text>
-
+            <Text style={{ color: 'red' }}>{message}</Text>
             <CustomInput
                 control={control}
-                name="username"
-                placeholder='username'
+                name="firstname"
+                placeholder='firstname'
                 rules={{
-                    required: 'Username is required *',
+                    required: 'firstname is required *',
                     minLength: {
                         value: 3,
-                        message: 'Username should be atleast 3 character long'
+                        message: 'firstname should be atleast 3 character long'
                     },
                     maxLength: {
-                        value: 24,
-                        message: 'Username should be maximum 24 character'
+                        value: 12,
+                        message: 'firstname should be maximum 12 character'
+                    }
+                }}
+
+            />
+            <CustomInput
+                control={control}
+                name="lastname"
+                placeholder='lastname'
+                rules={{
+                    required: 'lastname is required *',
+                    minLength: {
+                        value: 3,
+                        message: 'lastname should be atleast 3 character long'
+                    },
+                    maxLength: {
+                        value: 12,
+                        message: 'lastname should be maximum 12 character'
                     }
                 }}
 
@@ -55,8 +103,8 @@ const SignUpScreen = (props) => {
                 name='email'
                 placeholder='email'
                 rules={{
-                    required: 'Email is required',
-                    pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
+                    required: 'email is required',
+                    pattern: { value: EMAIL_REGEX, message: 'email is invalid' },
                 }}
             />
             <CustomInput
@@ -65,10 +113,10 @@ const SignUpScreen = (props) => {
                 placeholder='password'
                 secureTextEntry={true}
                 rules={{
-                    required: 'Password is required',
+                    required: 'password is required',
                     minLength: {
                         value: 8,
-                        message: 'Password should be at least 8 characters long',
+                        message: 'password should be at least 8 characters long',
                     },
                 }}
             />
@@ -81,6 +129,7 @@ const SignUpScreen = (props) => {
                     validate: value => value === pwd || 'Password do not match',
                 }}
             />
+         
             <CustomButton
                 onPress={handleSubmit(onRegesterPress)}
                 text={'Register'}
